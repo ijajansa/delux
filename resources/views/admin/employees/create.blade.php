@@ -76,11 +76,11 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="password_confirmation">Confirm PIN</label>
+                <label class="form-label" for="login_password_confirmation">Confirm PIN</label>
                 <input class="form-input"
                        type="tel"
-                       id="password_confirmation"
-                       name="password_confirmation"
+                       id="login_password_confirmation"
+                       name="login_password_confirmation"
                        placeholder="Confirm 4-digit PIN"
                        maxlength="4"
                        pattern="[0-9]{4}"

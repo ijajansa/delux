@@ -39,11 +39,12 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'contact_number' => 'required|string|digits:10|unique:users,contact_number',
-            'login_password' => 'required|string|digits:4|confirmed|unique:users,login_password',
+            'login_password' => 'required|string|digits:4|unique:users,login_password',
+            'login_password_confirmation' => 'required|string|digits:4|same:login_password',
         ], [
             'login_password.digits' => 'PIN must be exactly 4 digits.',
-            'login_password.confirmed' => 'PIN confirmation does not match.',
             'login_password.unique' => 'An employee with this password already exists.',
+            'login_password_confirmation.same' => 'PIN confirmation does not match.',
             'contact_number.unique' => 'An employee with this contact number already exists.',
         ]);
 
@@ -80,14 +81,23 @@ class EmployeeController extends Controller
                 'nullable',
                 'string',
                 'digits:4',
-                'confirmed',
                 Rule::unique('users', 'login_password')->ignore($employee->id),
+            ],
+            'login_password_confirmation' => [
+                'nullable',
+                'string',
+                'digits:4',
             ],
         ], [
             'login_password.digits' => 'PIN must be exactly 4 digits.',
-            'login_password.confirmed' => 'PIN confirmation does not match.',
             'login_password.unique' => 'This password is already used by another employee.',
         ]);
+
+        if ($request->filled('login_password') && $request->login_password !== $request->login_password_confirmation) {
+            return back()
+                ->withErrors(['login_password_confirmation' => 'PIN confirmation does not match.'])
+                ->withInput();
+        }
 
         $employee->name = $request->name;
         $employee->contact_number = $request->contact_number;

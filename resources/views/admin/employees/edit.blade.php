@@ -94,11 +94,11 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" for="password_confirmation">Confirm New PIN</label>
+                <label class="form-label" for="login_password_confirmation">Confirm New PIN</label>
                 <input class="form-input"
                        type="tel"
-                       id="password_confirmation"
-                       name="password_confirmation"
+                       id="login_password_confirmation"
+                       name="login_password_confirmation"
                        placeholder="Confirm new PIN"
                        maxlength="4"
                        pattern="[0-9]{4}"
