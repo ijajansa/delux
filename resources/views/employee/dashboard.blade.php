@@ -1,49 +1,84 @@
 @extends('layouts.app')
 
-@section('title', 'Employee Dashboard - Delux')
+@section('title', 'Partner Dashboard - Delux')
 
 @section('content')
 <div class="animate-in">
-    <h1 class="page-title">Welcome! 👋</h1>
-    <p class="page-subtitle">{{ Auth::user()->name }}</p>
+    <!-- Header Section -->
+    <div style="margin-bottom: 24px;">
+        <h1 class="page-title">Hello, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
+        <p class="page-subtitle">Ready for today's collections?</p>
+    </div>
 
-    <!-- Profile Card -->
-    <div class="card" style="margin-bottom: 24px; text-align: center; padding: 32px 20px;">
-        <div style="width: 80px; height: 80px; border-radius: 24px; background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: white; margin: 0 auto 16px;">
-            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+    <!-- Quick Action Card -->
+    <div class="card" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(168, 85, 247, 0.9)); border: none; padding: 24px; margin-bottom: 24px; position: relative; overflow: hidden;">
+        <div style="position: absolute; right: -20px; top: -20px; opacity: 0.1;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" style="width: 120px; height: 120px;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.112 6.345a4.5 4.5 0 0 1-4.474 5.283H4.806a4.5 4.5 0 0 1-4.474-5.283l1.112-6.345a4.5 4.5 0 0 1 4.474-3.807h9.704a4.5 4.5 0 0 1 4.474 3.807Z" /></svg>
         </div>
-        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 4px;">{{ Auth::user()->name }}</h2>
-        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Employee</p>
-
-        <div style="display: flex; justify-content: center; gap: 24px; padding-top: 16px; border-top: 1px solid var(--border); flex-direction: column;">
-            <a href="{{ route('collections.create') }}" class="btn btn-primary btn-full" style="margin-bottom: 8px;">Start Collection</a>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                <a href="{{ route('hotels.index') }}" class="btn btn-secondary btn-sm">Manage Hotels</a>
-                <a href="{{ route('cloth-types.index') }}" class="btn btn-secondary btn-sm">Cloth Types</a>
-            </div>
+        <div style="position: relative; z-index: 1;">
+            <h2 style="color: white; font-size: 20px; font-weight: 800; margin-bottom: 8px;">New Collection</h2>
+            <p style="color: rgba(255, 255, 255, 0.8); font-size: 14px; margin-bottom: 20px; max-width: 200px;">Record bags and items from your hotel visits.</p>
+            <a href="{{ route('collections.create') }}" class="btn" style="background: white; color: var(--accent); border: none; font-weight: 700; width: auto; display: inline-flex; padding: 12px 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                Start Collecting
+            </a>
         </div>
     </div>
 
-    <!-- Info Card -->
-    <div class="card" style="padding: 20px;">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="width: 40px; height: 40px; border-radius: 12px; background: rgba(99, 102, 241, 0.15); display: flex; align-items: center; justify-content: center;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="var(--accent)" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
-            </div>
-            <span style="font-size: 15px; font-weight: 600;">About</span>
+    <!-- Stats Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px;">
+        <div class="card" style="padding: 16px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--success); margin-bottom: 4px;">{{ $stats['today_collections'] }}</div>
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Today's Visits</div>
         </div>
-        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
-            You're logged in as an employee. Your admin manages your account access. If you have any questions, please contact your supervisor.
-        </p>
+        <div class="card" style="padding: 16px; text-align: center;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--accent); margin-bottom: 4px;">{{ $stats['total_history'] }}</div>
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Total Records</div>
+        </div>
     </div>
 
-    <!-- Logout -->
-    <form action="{{ route('logout') }}" method="POST" style="margin-top: 24px;">
-        @csrf
-        <button type="submit" class="btn btn-secondary btn-full" style="height: 50px;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:20px;height:20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" /></svg>
-            Sign Out
-        </button>
-    </form>
+    <!-- Management Tools -->
+    <div class="section-header">
+        <span class="section-title">Master Data</span>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;">
+        <a href="{{ route('hotels.index') }}" class="card" style="text-decoration:none; padding: 16px; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px;">🏨</div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Hotels</div>
+                <div style="font-size: 11px; color: var(--text-muted);">{{ $stats['active_hotels'] }} active</div>
+            </div>
+        </a>
+        <a href="{{ route('cloth-types.index') }}" class="card" style="text-decoration:none; padding: 16px; display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px;">👕</div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Items</div>
+                <div style="font-size: 11px; color: var(--text-muted);">Pricing/Types</div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="section-header">
+        <span class="section-title">Recent Collections</span>
+        <a href="{{ route('collections.history') }}" style="font-size: 12px; color: var(--accent); font-weight: 600; text-decoration: none;">View All</a>
+    </div>
+
+    @forelse($recentCollections as $collection)
+        <div class="employee-card" style="padding: 12px;">
+            <div class="emp-avatar" style="background: var(--bg-secondary); font-size: 16px;">
+                {{ substr($collection->hotel->name, 0, 1) }}
+            </div>
+            <div class="emp-info">
+                <div class="emp-name" style="font-size: 14px;">{{ $collection->hotel->name }}</div>
+                <div class="emp-contact" style="font-size: 11px;">{{ $collection->collected_at->diffForHumans() }}</div>
+            </div>
+            <a href="{{ route('collections.entry', $collection->hotel_id) }}" class="btn btn-secondary btn-sm" style="height: 28px; font-size: 11px; padding: 0 10px;">Edit</a>
+        </div>
+    @empty
+        <div class="empty-state" style="padding: 40px 20px;">
+            <div style="font-size: 40px; margin-bottom: 12px; opacity: 0.5;">📦</div>
+            <p>No collections yet. Use "Start Collecting" to begin.</p>
+        </div>
+    @endforelse
 </div>
 @endsection
