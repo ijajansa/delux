@@ -12,7 +12,7 @@
     @endif
 
     <div class="card" style="margin-bottom: 24px;">
-        <form action="{{ route('cloth-types.store') }}" method="POST">
+        <form action="{{ route('cloth-types.store') }}" method="POST" data-offline-form data-offline-label="cloth type">
             @csrf
             <div class="form-group">
                 <label class="form-label">Type Name</label>
@@ -35,7 +35,7 @@
                 <div class="emp-name">{{ $type->name }}</div>
                 <div class="emp-contact">{{ $type->is_active ? 'Active' : 'Inactive' }}</div>
             </div>
-            <form action="{{ route('cloth-types.toggle', $type->id) }}" method="POST">
+            <form action="{{ route('cloth-types.toggle', $type->id) }}" method="POST" data-offline-form data-offline-label="cloth type status">
                 @csrf @method('PATCH')
                 <button type="submit" class="btn {{ $type->is_active ? 'btn-danger' : 'btn-success' }} btn-sm">
                     {{ $type->is_active ? 'Disable' : 'Enable' }}

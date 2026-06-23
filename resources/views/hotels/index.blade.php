@@ -12,7 +12,7 @@
     @endif
 
     <div class="card" style="margin-bottom: 24px;">
-        <form action="{{ route('hotels.store') }}" method="POST">
+        <form action="{{ route('hotels.store') }}" method="POST" data-offline-form data-offline-label="hotel">
             @csrf
             <div class="form-group">
                 <label class="form-label">Hotel Name</label>
@@ -35,7 +35,7 @@
                 <div class="emp-name">{{ $hotel->name }}</div>
                 <div class="emp-contact">{{ $hotel->is_active ? 'Active' : 'Inactive' }}</div>
             </div>
-            <form action="{{ route('hotels.toggle', $hotel->id) }}" method="POST">
+            <form action="{{ route('hotels.toggle', $hotel->id) }}" method="POST" data-offline-form data-offline-label="hotel status">
                 @csrf @method('PATCH')
                 <button type="submit" class="btn {{ $hotel->is_active ? 'btn-danger' : 'btn-success' }} btn-sm">
                     {{ $hotel->is_active ? 'Disable' : 'Enable' }}

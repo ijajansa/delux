@@ -40,6 +40,17 @@ class ClothTypeController extends Controller
     public function toggle(ClothType $clothType)
     {
         $clothType->update(['is_active' => !$clothType->is_active]);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'Cloth type status updated!',
+                'clothType' => [
+                    'id' => $clothType->id,
+                    'is_active' => $clothType->is_active,
+                ],
+            ]);
+        }
+
         return back()->with('success', 'Cloth type status updated!');
     }
 }

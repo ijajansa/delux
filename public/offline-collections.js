@@ -1,6 +1,9 @@
 (function () {
-    const QUEUE_KEY = 'delux.offlineCollections.v1';
-    const collectionForm = document.querySelector('form[data-offline-collection-form]');
+    const QUEUE_KEY = 'delux.offlineForms.v1';
+    const LEGACY_COLLECTION_QUEUE_KEY = 'delux.offlineCollections.v1';
+    const offlineForms = document.querySelectorAll('form[data-offline-form]');
+
+    migrateLegacyQueue();
 
     function readQueue() {
         try {
@@ -15,6 +18,26 @@
         updateBanner();
     }
 
+    function migrateLegacyQueue() {
+        if (localStorage.getItem(QUEUE_KEY) || !localStorage.getItem(LEGACY_COLLECTION_QUEUE_KEY)) {
+            return;
+        }
+
+        try {
+            const legacyQueue = JSON.parse(localStorage.getItem(LEGACY_COLLECTION_QUEUE_KEY) || '[]');
+            const migratedQueue = legacyQueue.map(item => ({
+                ...item,
+                label: 'collection',
+                replaceKey: item.action,
+            }));
+
+            localStorage.setItem(QUEUE_KEY, JSON.stringify(migratedQueue));
+            localStorage.removeItem(LEGACY_COLLECTION_QUEUE_KEY);
+        } catch (error) {
+            localStorage.removeItem(LEGACY_COLLECTION_QUEUE_KEY);
+        }
+    }
+
     function formToPayload(form) {
         const payload = {};
         new FormData(form).forEach((value, key) => {
@@ -23,19 +46,32 @@
         return payload;
     }
 
-    function queueCollection(form) {
+    function queueForm(form) {
         const action = form.action;
-        const queue = readQueue().filter(item => item.action !== action);
+        const label = form.dataset.offlineLabel || 'form';
+        const replaceKey = label === 'collection' ? action : null;
+        const queue = replaceKey
+            ? readQueue().filter(item => item.replaceKey !== replaceKey)
+            : readQueue();
 
         queue.push({
             action,
             method: form.method || 'POST',
             payload: formToPayload(form),
+            label,
+            replaceKey,
             queuedAt: new Date().toISOString(),
         });
 
         writeQueue(queue);
-        showBanner('Saved offline. It will sync when connection returns.', 'warning');
+        showBanner(`Saved ${label} offline. It will sync when connection returns.`, 'warning');
+        clearTextInputs(form);
+    }
+
+    function clearTextInputs(form) {
+        form.querySelectorAll('input[type="text"]').forEach(input => {
+            input.value = '';
+        });
     }
 
     function buildBody(payload) {
@@ -56,7 +92,7 @@
             return;
         }
 
-        showBanner(`Syncing ${queue.length} offline collection${queue.length === 1 ? '' : 's'}...`, 'info');
+        showBanner(`Syncing ${queue.length} offline item${queue.length === 1 ? '' : 's'}...`, 'info');
 
         const remaining = [];
 
@@ -83,11 +119,11 @@
         writeQueue(remaining);
 
         if (remaining.length) {
-            showBanner(`${remaining.length} collection${remaining.length === 1 ? '' : 's'} still pending. Keep this device logged in and try again online.`, 'warning');
+            showBanner(`${remaining.length} offline item${remaining.length === 1 ? '' : 's'} still pending. Keep this device logged in and try again online.`, 'warning');
             return;
         }
 
-        showBanner('Offline collections synced.', 'success');
+        showBanner('Offline items synced.', 'success');
         setTimeout(updateBanner, 3000);
     }
 
@@ -103,16 +139,16 @@
     }
 
     function ensureBanner() {
-        let banner = document.getElementById('offlineCollectionBanner');
+        let banner = document.getElementById('offlineSyncBanner');
         if (banner) return banner;
 
         banner = document.createElement('div');
-        banner.id = 'offlineCollectionBanner';
+        banner.id = 'offlineSyncBanner';
         banner.style.cssText = [
             'position:fixed',
             'left:16px',
             'right:16px',
-            'bottom:calc(76px + env(safe-area-inset-bottom))',
+            'top:calc(16px + env(safe-area-inset-top))',
             'z-index:9999',
             'display:none',
             'padding:12px 14px',
@@ -146,26 +182,26 @@
         const pending = readQueue().length;
 
         if (!navigator.onLine) {
-            showBanner(pending ? `${pending} collection${pending === 1 ? '' : 's'} waiting to sync.` : 'Offline mode. Collection entries will be saved on this device.', 'warning');
+            showBanner(pending ? `${pending} offline item${pending === 1 ? '' : 's'} waiting to sync.` : 'Offline mode. Supported forms will be saved on this device.', 'warning');
             return;
         }
 
         if (pending) {
-            showBanner(`${pending} offline collection${pending === 1 ? '' : 's'} pending sync.`, 'info');
+            showBanner(`${pending} offline item${pending === 1 ? '' : 's'} pending sync.`, 'info');
             return;
         }
 
         banner.style.display = 'none';
     }
 
-    if (collectionForm) {
-        collectionForm.addEventListener('submit', event => {
+    offlineForms.forEach(form => {
+        form.addEventListener('submit', event => {
             if (navigator.onLine) return;
 
             event.preventDefault();
-            queueCollection(collectionForm);
+            queueForm(form);
         });
-    }
+    });
 
     window.addEventListener('online', syncQueue);
     window.addEventListener('offline', updateBanner);
