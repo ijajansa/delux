@@ -1,10 +1,11 @@
 const CACHE_NAME = 'delux-v1';
+const BASE_URL = new URL(self.registration.scope);
 const STATIC_ASSETS = [
-    '/',
-    '/manifest.json',
-    '/icons/icon-192.png',
-    '/icons/icon-512.png',
-];
+    './',
+    'manifest.json',
+    'icons/icon-192.png',
+    'icons/icon-512.png',
+].map(path => new URL(path, BASE_URL).toString());
 
 // Install - cache static assets
 self.addEventListener('install', event => {
