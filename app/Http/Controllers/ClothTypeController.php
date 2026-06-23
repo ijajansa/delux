@@ -15,8 +15,25 @@ class ClothTypeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|max:255']);
-        ClothType::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:cloth_types,name',
+        ]);
+
+        $clothType = ClothType::create([
+            'name' => $validated['name'],
+            'is_active' => true,
+        ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Cloth type added successfully!',
+                'clothType' => [
+                    'id' => $clothType->id,
+                    'name' => $clothType->name,
+                ],
+            ], 201);
+        }
+
         return back()->with('success', 'Cloth type added successfully!');
     }
 

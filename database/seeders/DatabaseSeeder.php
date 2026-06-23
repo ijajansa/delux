@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         // Create default SuperAdmin
         User::firstOrCreate(
-            ['email' => 'admin@delux.com'],
+            ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Super Admin',
-                'password' => 'admin1234',
+                'password' => 'Ijaj@4366',
                 'role' => User::ROLE_SUPERADMIN,
                 'is_active' => true,
             ]

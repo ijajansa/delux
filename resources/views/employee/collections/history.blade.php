@@ -12,7 +12,10 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
                 <div style="flex: 1;">
                     <h3 style="font-size: 16px; font-weight: 700;">{{ $collection->hotel->name }}</h3>
-                    <p style="font-size: 12px; color: var(--text-muted);">{{ $collection->collected_at->format('d M Y, h:i A') }}</p>
+                    <p style="display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; padding: 4px 10px; border-radius: 999px; background: var(--bg-secondary); color: var(--text-primary); font-size: 12px; font-weight: 700;">
+                        <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block;"></span>
+                        {{ $collection->collected_at->format('d M Y, h:i A') }}
+                    </p>
                 </div>
                 <div>
                     @if($collection->collected_at->gt(now()->subDays(3)->startOfDay()))
