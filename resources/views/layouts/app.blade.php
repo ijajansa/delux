@@ -7,10 +7,10 @@
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Delux Admin">
+    <meta name="apple-mobile-web-app-title" content="Washtrack">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <title>@yield('title', 'Delux Admin Panel')</title>
+    <title>@yield('title', 'Washtrack admin')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -709,7 +709,7 @@
     <div class="app-wrapper">
         <!-- Header -->
         <header class="app-header">
-            <div class="logo">DELUX</div>
+            <div class="logo">WASHTRACK</div>
             @auth
             <div class="user-badge">
                 <div class="avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>

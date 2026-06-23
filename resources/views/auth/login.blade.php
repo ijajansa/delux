@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#0f172a">
-    <title>Login - Delux Admin</title>
+    <title>Login - Washtrack</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -339,8 +339,9 @@
     <div class="login-container">
         <!-- Logo -->
         <div class="login-logo">
-            <h1>DELUX</h1>
-            <p>Admin Panel</p>
+            <img src="/images/logo.png" alt="Washtrack Logo" style="width: 120px; height: 120px; margin-bottom: 16px; border-radius: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); border: 2px solid rgba(99, 102, 241, 0.3);">
+            {{-- <h1>WASHTRACK</h1> --}}
+            <p>Laundry Management System</p>
         </div>
 
         <!-- Login Card -->

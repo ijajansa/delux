@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Partner Dashboard - Delux')
+@section('title', 'Partner Dashboard - Washtrack')
 
 @section('content')
 <div class="animate-in">
