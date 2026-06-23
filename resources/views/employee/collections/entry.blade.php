@@ -36,7 +36,7 @@
         </form>
     </div>
 
-    <form action="{{ route('collections.store', $hotel->id) }}" method="POST">
+    <form action="{{ route('collections.store', $hotel->id) }}" method="POST" data-offline-collection-form>
         @csrf
         <div class="card" style="margin-bottom: 24px;">
             <div class="section-header" style="margin-bottom: 16px;">

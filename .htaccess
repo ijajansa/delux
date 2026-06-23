@@ -14,7 +14,7 @@
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
     # Serve Laravel public assets when the app runs from /delux.
-    RewriteRule ^(manifest\.json|sw\.js|favicon\.ico|robots\.txt)$ public/$1 [L]
+    RewriteRule ^(manifest\.json|sw\.js|offline-collections\.js|favicon\.ico|robots\.txt)$ public/$1 [L]
     RewriteRule ^(icons|images|build)/(.*)$ public/$1/$2 [L]
 
     # Redirect Trailing Slashes If Not A Folder...

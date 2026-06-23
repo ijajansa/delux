@@ -773,6 +773,7 @@
             });
         }
     </script>
+    <script src="{{ asset('offline-collections.js') }}" defer></script>
     @yield('scripts')
 </body>
 </html>

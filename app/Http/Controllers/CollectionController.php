@@ -89,6 +89,14 @@ class CollectionController extends Controller
             }
         }
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Collection saved successfully!',
+                'collection_id' => $collection->id,
+                'redirect' => route('employee.dashboard'),
+            ]);
+        }
+
         return redirect()->route('employee.dashboard')->with('success', 'Collection saved successfully!');
     }
 

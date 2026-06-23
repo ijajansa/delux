@@ -3,6 +3,7 @@ const BASE_URL = new URL(self.registration.scope);
 const STATIC_ASSETS = [
     './',
     'manifest.json',
+    'offline-collections.js',
     'icons/icon-192.png',
     'icons/icon-512.png',
 ].map(path => new URL(path, BASE_URL).toString());
