@@ -21,11 +21,23 @@
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
             </div>
+
+            @if($canManageClothTypes)
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label" for="partner_id">Assign Partner</label>
+                    <select id="partner_id" name="partner_id" class="form-input" required>
+                        <option value="">Select partner</option>
+                        @foreach($partners as $partner)
+                            <option value="{{ $partner->id }}">{{ $partner->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
         </form>
     </div>
 
     <div class="section-header">
-        <span class="section-title">All Types</span>
+        <span class="section-title">{{ $canManageClothTypes ? 'All Types' : 'My Types' }}</span>
     </div>
 
     @forelse($clothTypes as $type)
@@ -34,6 +46,9 @@
             <div class="emp-info">
                 <div class="emp-name">{{ $type->name }}</div>
                 <div class="emp-contact">{{ $type->is_active ? 'Active' : 'Inactive' }}</div>
+                @if($canManageClothTypes)
+                    <div class="emp-contact">{{ $type->partner?->name ?? 'Unassigned' }}</div>
+                @endif
             </div>
             <form action="{{ route('cloth-types.toggle', $type->id) }}" method="POST" data-offline-form data-offline-label="cloth type status">
                 @csrf @method('PATCH')
@@ -43,7 +58,7 @@
             </form>
         </div>
     @empty
-        <div class="empty-state">No types added yet.</div>
+        <div class="empty-state">{{ $canManageClothTypes ? 'No types added yet.' : 'No types assigned to your account yet.' }}</div>
     @endforelse
 </div>
 @endsection

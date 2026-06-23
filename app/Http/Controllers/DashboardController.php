@@ -25,11 +25,14 @@ class DashboardController extends Controller
                 ->count(),
             'total_history' => (clone $collectionsQuery)->count(),
             'total_cloths' => (clone $collectionItemsQuery)->sum('collection_items.quantity'),
-            'active_hotels' => Hotel::where('is_active', true)->count(),
+            'active_hotels' => Hotel::where('is_active', true)
+                ->where('partner_id', $user->id)
+                ->count(),
         ];
 
         $hotelWiseKpis = (clone $collectionsQuery)
             ->join('hotels', 'collections.hotel_id', '=', 'hotels.id')
+            ->where('hotels.partner_id', $user->id)
             ->leftJoin('collection_items', 'collections.id', '=', 'collection_items.collection_id')
             ->select(
                 'hotels.id',

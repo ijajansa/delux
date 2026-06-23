@@ -51,18 +51,16 @@ class AuthController extends Controller
             'password' => 'required|string|digits:4',
         ]);
 
-        // For now, if only one partner exists, we just check the PIN
-        $user = User::where('role', User::ROLE_EMPLOYEE)
-                     ->where('is_active', true)
-                     ->first();
+        $user = User::employees()
+            ->where('login_password', $request->password)
+            ->where('is_active', true)
+            ->first();
 
         if (!$user) {
-            return back()->withErrors(['password' => 'No active partner account found.'])->withInput();
+            return back()->withErrors(['password' => 'Invalid partner password.'])->withInput();
         }
 
-        if (!Auth::attempt(['contact_number' => $user->contact_number, 'password' => $request->password])) {
-            return back()->withErrors(['password' => 'Invalid PIN.'])->withInput();
-        }
+        Auth::login($user);
 
         $request->session()->regenerate();
         return redirect()->intended('/employee/dashboard');

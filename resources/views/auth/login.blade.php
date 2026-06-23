@@ -357,7 +357,7 @@
             <form class="login-form" id="form-superadmin" action="{{ route('login.superadmin') }}" method="POST">
                 @csrf
 
-                @if($errors->has('email') && !($errors->has('contact_number') || $errors->has('password')))
+                @if($errors->has('email') && !$errors->has('password'))
                     <div class="alert alert-danger">
                         {{ $errors->first('email') }}
                     </div>
@@ -394,12 +394,10 @@
             <form class="login-form active" id="form-employee" action="{{ route('login.employee') }}" method="POST">
                 @csrf
 
-                @if($errors->has('password') || (!session('errors') && !session('success')))
-                    @if($errors->any() && $errors->has('password'))
-                        <div class="alert alert-danger">
-                            {{ $errors->first('password') }}
-                        </div>
-                    @endif
+                @if($errors->has('password'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('password') }}
+                    </div>
                 @endif
 
                 <div class="form-group" style="margin-top: 24px;">
@@ -429,7 +427,7 @@
         }
 
         // Auto switch tab on validation error
-        @if($errors->has('contact_number') || $errors->has('password'))
+        @if($errors->has('password'))
             switchTab('employee');
         @endif
 
@@ -468,7 +466,6 @@
                 }
             });
 
-            // Handle paste
             input.addEventListener('paste', (e) => {
                 e.preventDefault();
                 const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
@@ -482,7 +479,6 @@
                 updateHiddenPin();
             });
 
-            // Select on focus
             input.addEventListener('focus', () => {
                 input.select();
             });

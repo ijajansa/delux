@@ -54,23 +54,23 @@
                 @error('contact_number')
                     <p class="form-error">{{ $message }}</p>
                 @enderror
-                <p class="form-hint">Employee will use this number to login</p>
+                <p class="form-hint">Keep this for contact and record-keeping.</p>
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="password">4-Digit PIN</label>
-                <input class="form-input {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                <label class="form-label" for="login_password">Partner Password</label>
+                <input class="form-input {{ $errors->has('login_password') ? 'is-invalid' : '' }}"
                        type="tel"
-                       id="password"
-                       name="password"
-                       placeholder="Set 4-digit login PIN"
+                       id="login_password"
+                       name="login_password"
+                       placeholder="Set 4-digit partner PIN"
                        maxlength="4"
                        pattern="[0-9]{4}"
                        required
                        inputmode="numeric"
                        autocomplete="new-password"
                        style="letter-spacing: 8px; text-align: center; font-size: 20px; font-weight: 700;">
-                @error('password')
+                @error('login_password')
                     <p class="form-error">{{ $message }}</p>
                 @enderror
             </div>

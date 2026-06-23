@@ -13,7 +13,9 @@ class CollectionController extends Controller
 {
     public function create()
     {
-        $hotels = Hotel::where('is_active', true)->get();
+        $hotels = Hotel::where('is_active', true)
+            ->where('partner_id', Auth::id())
+            ->get();
         
         // For each hotel, check if a collection exists today
         $today = now()->startOfDay();
@@ -34,12 +36,16 @@ class CollectionController extends Controller
 
     public function entry(Hotel $hotel)
     {
+        abort_unless($hotel->partner_id === Auth::id(), 403);
+
         $today = now()->startOfDay();
         $collection = Collection::where('hotel_id', $hotel->id)
             ->where('collected_at', '>=', $today)
             ->first();
 
-        $clothTypes = ClothType::where('is_active', true)->get();
+        $clothTypes = ClothType::where('is_active', true)
+            ->where('partner_id', Auth::id())
+            ->get();
         
         // If editing an existing collection, map quantities
         $existingQuantities = [];
@@ -56,6 +62,8 @@ class CollectionController extends Controller
 
     public function store(Request $request, Hotel $hotel)
     {
+        abort_unless($hotel->partner_id === Auth::id(), 403);
+
         $request->validate([
             'quantities' => 'required|array',
             'quantities.*' => 'nullable|integer|min:0',

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
-    protected $fillable = ['name', 'is_active'];
+    protected $fillable = ['name', 'is_active', 'partner_id'];
 
     protected $casts = [
         'is_active' => 'boolean',
@@ -15,5 +15,10 @@ class Hotel extends Model
     public function collections()
     {
         return $this->hasMany(Collection::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(User::class, 'partner_id');
     }
 }

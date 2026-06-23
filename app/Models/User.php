@@ -19,6 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'login_password',
         'role',
         'contact_number',
         'is_active',
@@ -26,6 +27,7 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
+        'login_password',
         'remember_token',
     ];
 
@@ -59,5 +61,10 @@ class User extends Authenticatable
     public function scopeEmployees($query)
     {
         return $query->where('role', self::ROLE_EMPLOYEE);
+    }
+
+    public function hotels()
+    {
+        return $this->hasMany(Hotel::class, 'partner_id');
     }
 }

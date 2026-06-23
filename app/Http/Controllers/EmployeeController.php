@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
@@ -40,17 +39,19 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'contact_number' => 'required|string|digits:10|unique:users,contact_number',
-            'password' => 'required|string|digits:4|confirmed',
+            'login_password' => 'required|string|digits:4|confirmed|unique:users,login_password',
         ], [
-            'password.digits' => 'PIN must be exactly 4 digits.',
-            'password.confirmed' => 'PIN confirmation does not match.',
+            'login_password.digits' => 'PIN must be exactly 4 digits.',
+            'login_password.confirmed' => 'PIN confirmation does not match.',
+            'login_password.unique' => 'An employee with this password already exists.',
             'contact_number.unique' => 'An employee with this contact number already exists.',
         ]);
 
         User::create([
             'name' => $request->name,
             'contact_number' => $request->contact_number,
-            'password' => $request->password,
+            'password' => $request->login_password,
+            'login_password' => $request->login_password,
             'role' => User::ROLE_EMPLOYEE,
             'is_active' => true,
         ]);
@@ -75,17 +76,25 @@ class EmployeeController extends Controller
                 'required', 'string', 'digits:10',
                 Rule::unique('users', 'contact_number')->ignore($employee->id),
             ],
-            'password' => 'nullable|string|digits:4|confirmed',
+            'login_password' => [
+                'nullable',
+                'string',
+                'digits:4',
+                'confirmed',
+                Rule::unique('users', 'login_password')->ignore($employee->id),
+            ],
         ], [
-            'password.digits' => 'PIN must be exactly 4 digits.',
-            'password.confirmed' => 'PIN confirmation does not match.',
+            'login_password.digits' => 'PIN must be exactly 4 digits.',
+            'login_password.confirmed' => 'PIN confirmation does not match.',
+            'login_password.unique' => 'This password is already used by another employee.',
         ]);
 
         $employee->name = $request->name;
         $employee->contact_number = $request->contact_number;
 
-        if ($request->filled('password')) {
-            $employee->password = $request->password;
+        if ($request->filled('login_password')) {
+            $employee->password = $request->login_password;
+            $employee->login_password = $request->login_password;
         }
 
         $employee->save();
