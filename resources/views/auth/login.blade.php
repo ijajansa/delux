@@ -347,15 +347,15 @@
         <div class="login-card">
             <!-- Tabs -->
             <div class="login-tabs">
-                <button class="login-tab active" onclick="switchTab('superadmin')" type="button" id="tab-superadmin">Super Admin</button>
-                <button class="login-tab" onclick="switchTab('employee')" type="button" id="tab-employee">Employee</button>
+                <button class="login-tab" onclick="switchTab('superadmin')" type="button" id="tab-superadmin">Super Admin</button>
+                <button class="login-tab active" onclick="switchTab('employee')" type="button" id="tab-employee">Partner</button>
             </div>
 
             <!-- SuperAdmin Form -->
-            <form class="login-form active" id="form-superadmin" action="{{ route('login.superadmin') }}" method="POST">
+            <form class="login-form" id="form-superadmin" action="{{ route('login.superadmin') }}" method="POST">
                 @csrf
 
-                @if($errors->has('email'))
+                @if($errors->has('email') && !($errors->has('contact_number') || $errors->has('password')))
                     <div class="alert alert-danger">
                         {{ $errors->first('email') }}
                     </div>
@@ -389,13 +389,15 @@
             </form>
 
             <!-- Employee Form -->
-            <form class="login-form" id="form-employee" action="{{ route('login.employee') }}" method="POST">
+            <form class="login-form active" id="form-employee" action="{{ route('login.employee') }}" method="POST">
                 @csrf
 
-                @if($errors->has('contact_number') || $errors->has('password'))
-                    <div class="alert alert-danger">
-                        {{ $errors->first('contact_number') ?: $errors->first('password') }}
-                    </div>
+                @if(($errors->has('contact_number') || $errors->has('password')) || (!session('errors') && !session('success')))
+                    @if($errors->any() && ($errors->has('contact_number') || $errors->has('password')))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('contact_number') ?: $errors->first('password') }}
+                        </div>
+                    @endif
                 @endif
 
                 <div class="form-group">
