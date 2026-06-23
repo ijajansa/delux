@@ -1,7 +1,7 @@
 {
-    "name": "Delux Admin Panel",
-    "short_name": "Delux",
-    "description": "Delux Admin Panel - Employee Management System",
+    "name": "Washtrack",
+    "short_name": "Washtrack",
+    "description": "Washtrack - Laundry Management System",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0f172a",
