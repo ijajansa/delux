@@ -48,23 +48,19 @@ class AuthController extends Controller
     public function employeeLogin(Request $request)
     {
         $request->validate([
-            'contact_number' => 'required|string|digits:10',
             'password' => 'required|string|digits:4',
         ]);
 
-        $user = User::where('contact_number', $request->contact_number)
-                     ->where('role', User::ROLE_EMPLOYEE)
+        // For now, if only one partner exists, we just check the PIN
+        $user = User::where('role', User::ROLE_EMPLOYEE)
+                     ->where('is_active', true)
                      ->first();
 
         if (!$user) {
-            return back()->withErrors(['contact_number' => 'No employee found with this contact number.'])->withInput();
+            return back()->withErrors(['password' => 'No active partner account found.'])->withInput();
         }
 
-        if (!$user->is_active) {
-            return back()->withErrors(['contact_number' => 'Your account has been deactivated. Contact admin.'])->withInput();
-        }
-
-        if (!Auth::attempt(['contact_number' => $request->contact_number, 'password' => $request->password])) {
+        if (!Auth::attempt(['contact_number' => $user->contact_number, 'password' => $request->password])) {
             return back()->withErrors(['password' => 'Invalid PIN.'])->withInput();
         }
 

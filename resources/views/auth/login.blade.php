@@ -393,31 +393,16 @@
             <form class="login-form active" id="form-employee" action="{{ route('login.employee') }}" method="POST">
                 @csrf
 
-                @if(($errors->has('contact_number') || $errors->has('password')) || (!session('errors') && !session('success')))
-                    @if($errors->any() && ($errors->has('contact_number') || $errors->has('password')))
+                @if($errors->has('password') || (!session('errors') && !session('success')))
+                    @if($errors->any() && $errors->has('password'))
                         <div class="alert alert-danger">
-                            {{ $errors->first('contact_number') ?: $errors->first('password') }}
+                            {{ $errors->first('password') }}
                         </div>
                     @endif
                 @endif
 
-                <div class="form-group">
-                    <label class="form-label" for="emp-contact">Contact Number</label>
-                    <input class="form-input {{ $errors->has('contact_number') ? 'is-invalid' : '' }}"
-                           type="tel"
-                           id="emp-contact"
-                           name="contact_number"
-                           placeholder="Enter 10-digit number"
-                           value="{{ old('contact_number') }}"
-                           maxlength="10"
-                           pattern="[0-9]{10}"
-                           required
-                           inputmode="tel"
-                           autocomplete="tel">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">4-Digit PIN</label>
+                <div class="form-group" style="margin-top: 24px;">
+                    <label class="form-label" style="text-align: center;">Enter 4-Digit PIN</label>
                     <div class="pin-container">
                         <input class="pin-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-pin="1" autocomplete="off">
                         <input class="pin-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-pin="2" autocomplete="off">
@@ -425,9 +410,6 @@
                         <input class="pin-input" type="tel" maxlength="1" inputmode="numeric" pattern="[0-9]" data-pin="4" autocomplete="off">
                     </div>
                     <input type="hidden" name="password" id="pin-hidden">
-                    @if($errors->has('password'))
-                        <p class="form-error" style="text-align:center; margin-top:8px;">{{ $errors->first('password') }}</p>
-                    @endif
                 </div>
 
                 <button type="submit" class="btn-login" id="emp-submit">Sign In</button>
