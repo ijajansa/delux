@@ -57,6 +57,20 @@
         </a>
     </div>
 
+    <div class="section-header">
+        <span class="section-title">Reports</span>
+    </div>
+    <a href="{{ route('employee.kpi') }}" class="card" style="text-decoration:none; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(99, 102, 241, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px;">📊</div>
+            <div>
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-primary);">KPI Report</div>
+                <div style="font-size: 11px; color: var(--text-muted);">{{ $stats['total_cloths'] }} cloths collected</div>
+            </div>
+        </div>
+        <div style="font-size: 12px; font-weight: 700; color: var(--accent);">Open</div>
+    </a>
+
     <!-- Recent Activity -->
     <div class="section-header">
         <span class="section-title">Recent Collections</span>

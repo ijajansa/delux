@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
 // Employee routes
 Route::middleware(['auth', 'role:employee'])->prefix('employee')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'employeeDashboard'])->name('employee.dashboard');
+    Route::get('/kpi', [DashboardController::class, 'employeeKpi'])->name('employee.kpi');
     Route::get('/collection', [CollectionController::class, 'create'])->name('collections.create');
     Route::get('/collection/{hotel}', [CollectionController::class, 'entry'])->name('collections.entry');
     Route::post('/collection/{hotel}', [CollectionController::class, 'store'])->name('collections.store');
