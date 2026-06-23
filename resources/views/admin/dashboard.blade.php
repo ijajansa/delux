@@ -37,6 +37,18 @@
         </div>
     </div>
 
+    <!-- Master Management -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+        <a href="{{ route('hotels.index') }}" class="card" style="text-decoration:none; text-align:center; padding: 16px;">
+            <div style="font-size:24px; margin-bottom:8px;">🏨</div>
+            <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Hotels</div>
+        </a>
+        <a href="{{ route('cloth-types.index') }}" class="card" style="text-decoration:none; text-align:center; padding: 16px;">
+            <div style="font-size:24px; margin-bottom:8px;">👕</div>
+            <div style="font-size:14px; font-weight:700; color:var(--text-primary);">Items</div>
+        </a>
+    </div>
+
     <!-- Recent Employees -->
     <div class="section-header">
         <span class="section-title">Recent Employees</span>

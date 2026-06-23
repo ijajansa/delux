@@ -15,14 +15,11 @@
         <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 4px;">{{ Auth::user()->name }}</h2>
         <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">Employee</p>
 
-        <div style="display: flex; justify-content: center; gap: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
-            <div>
-                <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">Contact</div>
-                <div style="font-size: 15px; font-weight: 600;">📱 {{ Auth::user()->contact_number }}</div>
-            </div>
-            <div>
-                <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">Status</div>
-                <span class="badge badge-success">Active</span>
+        <div style="display: flex; justify-content: center; gap: 24px; padding-top: 16px; border-top: 1px solid var(--border); flex-direction: column;">
+            <a href="{{ route('collections.create') }}" class="btn btn-primary btn-full" style="margin-bottom: 8px;">Start Collection</a>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <a href="{{ route('hotels.index') }}" class="btn btn-secondary btn-sm">Manage Hotels</a>
+                <a href="{{ route('cloth-types.index') }}" class="btn btn-secondary btn-sm">Cloth Types</a>
             </div>
         </div>
     </div>
